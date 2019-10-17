@@ -1,0 +1,1 @@
+<span>{{App\Http\Controllers\AppController::getAppName()}}</span>
