@@ -302,8 +302,8 @@ Route::group(['prefix' => 'admin'], function () {
   Route::post('/login-admin', 'AdminAuth\LoginController@login');
   Route::post('/logout-admin', 'AdminAuth\LoginController@logout');
 
-//   Route::get('/register', 'AdminAuth\RegisterController@showRegistrationForm');
-//   Route::post('/register-admin', 'AdminAuth\RegisterController@register');
+  Route::get('/register', 'AdminAuth\RegisterController@showRegistrationForm');
+  Route::post('/register-admin', 'AdminAuth\RegisterController@register');
 
   Route::post('/password/email', 'AdminAuth\ForgotPasswordController@sendResetLinkEmail');
   Route::post('/password/reset', 'AdminAuth\ResetPasswordController@reset');

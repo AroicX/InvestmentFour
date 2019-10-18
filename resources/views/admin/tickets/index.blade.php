@@ -20,6 +20,7 @@
                     <thead>
                         <tr>
                             <th>Id</th>
+                            <th>Type</th>
                             <th>Message</th>
                             <th>Satisfied</th>
                             <th>Response</th>
@@ -27,21 +28,13 @@
                             <th></th>
                         </tr>
                     </thead>
-                    <tfoot>
-                        <tr>
-                            <th>Id</th>
-                            <th>Message</th>
-                            <th>Satisfied</th>
-                            <th>Response</th>
-                            <th>Date</th>
-                            <th></th>
-                        </tr>
-                    </tfoot>
+                   
                     <tbody>
 
                         @foreach ($tickets as $ticket)
                         <tr>
                             <td>{{$ticket->id}}</td>
+                            <td>{{$ticket->ticket_subject->subject}}</td>
                             <td>{{$ticket->message}}</td>
                             <td>
                                 @if ($ticket->satisfied == 0)
@@ -72,11 +65,9 @@
                                         aria-labelledby="dropdownMenuLink" x-placement="bottom-end"
                                         style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(17px, 19px, 0px);">
                                         <div class="dropdown-header">Options</div>
-                                        <a class="dropdown-item" href="#" data-toggle="modal"
-                                            id="response{{$ticket->id}}" data-target="#exampleModal"
-                                            data-whatever="@mdo">Reply</a>
+                                        <a class="dropdown-item" href="/admin/ticket-edit/{{$ticket->id}}" >Reply</a>
                                         <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="/admin/delete-post/{{$ticket->id}}">Delete</a>
+                                        <a class="dropdown-item" href="/admin/ticket-delete/{{$ticket->id}}">Delete</a>
                                     </div>
                                 </div></button>
                             </td>
@@ -90,7 +81,7 @@
         </div>
     </div>
 
-    @include('admin.tickets.modal-response')
+    
 
 </div>
 @endsection
@@ -106,8 +97,10 @@
             let id = $(this).attr('id');
             id = id.replace("response", "");
 
+           setTimeout(()=>{
             $('#get-response').val(id);
-            // console.log(id);
+           },1000)
+            console.log(id);
 
         });
 

@@ -16,7 +16,10 @@ class TicketController extends Controller
 
     public function index(TicketMessage $ticket)
     {
-        $tickets = $ticket->all();
+        $tickets = $ticket->with('ticket_subject')->get();
+
+        // return $tickets;
+
         $responses = TicketResponse::all();
 
 
@@ -40,6 +43,14 @@ class TicketController extends Controller
 
 
         // return $request->all();
+    }
+
+    public function edit($id)
+    {
+        $ticket = TicketMessage::where('id', '=', $id)->with('ticket_subject')->first();
+        $responses = TicketResponse::where('ticket_message_id', '=', $id)->get();
+
+        return view('admin.tickets.modal-response',compact('ticket','responses'));
     }
 
 
