@@ -35,6 +35,7 @@ Route::post('/page-control-team', 'PageController@TeamMember');
 
 Route::get('/ticket-control', 'TicketController@index');
 Route::get('/ticket-edit/{id}', 'TicketController@edit');
+Route::get('/ticket-delete/{id}', 'TicketController@delete');
 Route::post('/ticket-control-responed', 'TicketController@Responsed');
 
 

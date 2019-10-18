@@ -53,6 +53,15 @@ class TicketController extends Controller
         return view('admin.tickets.modal-response',compact('ticket','responses'));
     }
 
+    public function delete($id)
+    {
+        $ticket = TicketMessage::where('id', '=', $id)->delete();
+
+        $notification = array('message' => 'TIicket Deleted','alert' => 'success' );
+        return redirect()->back()->with($notification); 
+
+
+    }
 
 
 }
