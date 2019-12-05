@@ -52,7 +52,7 @@ class PageController extends Controller
         $dataWithImage = array(
             'summary' =>  Purifier::clean($request->summary),
             'who_we_are' =>  Purifier::clean($request->who_we_are),
-            'who_we_are' =>  Purifier::clean($request->who_we_are),
+            'what_we_do' =>  Purifier::clean($request->what_we_do),
             'our_essence' =>  Purifier::clean($request->our_essence),
             'header_image' => $filename,
         );
@@ -71,7 +71,7 @@ class PageController extends Controller
             $data = array(
                 'summary' =>  Purifier::clean($request->summary),
                 'who_we_are' =>  Purifier::clean($request->who_we_are),
-                'who_we_are' =>  Purifier::clean($request->who_we_are),
+                'what_we_do' =>  Purifier::clean($request->what_we_do),
                 'our_essence' =>  Purifier::clean($request->our_essence),
                
             );

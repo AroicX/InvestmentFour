@@ -297,6 +297,16 @@ Route::get('/investor/dashboard/logout', [
 ]);
 
 
+//market place
+Route::post('sale-off','MarketController@addToMarket')->name('sale-off');
+Route::get('/investor/dashboard/marketplace','MarketController@showMarket')->name('market');
+Route::post('/investor/dashboard/marketplace-buy','MarketController@buyProperty')->name('buy-property');
+
+
+Route::post('/pay', 'PaystacksController@redirectToGateway')->name('pay'); 
+Route::get('/payment/callback', 'PaystacksController@handleGatewayCallback');
+
+
 Route::group(['prefix' => 'admin'], function () {
   Route::get('/login', 'AdminAuth\LoginController@showLoginForm');
   Route::post('/login-admin', 'AdminAuth\LoginController@login');

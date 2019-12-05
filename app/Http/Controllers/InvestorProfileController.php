@@ -38,6 +38,8 @@ class InvestorProfileController extends Controller
         $country            = Auth::user()->country;
         $country_prefix     = $globalMethods->getCountryPrefix($country);
         $investor_id        = $this->investorID();
+
+        // return $investor_id;
         $kin_info           = Kin::where('investor_id', $investor_id)->first(); 
         $bank_info          = BankDetail::where('investor_id', $investor_id)->get()->first();
         $bank_name          = ($bank_info === Null ? '' : $globalMethods->getBank($bank_info->bank_id));

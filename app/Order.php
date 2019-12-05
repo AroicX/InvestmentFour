@@ -8,6 +8,11 @@ class Order extends Model
 {
     protected $guarded = ['id'];
     
+    public function investor ()
+    {
+        return $this->belongsTo('App\Investor','investor_id','investor_id');
+    }
+
     public function investment ()
     {
         return $this->belongsTo('App\Investment');
@@ -18,5 +23,7 @@ class Order extends Model
     {
         return $this->hasMany('App\Transaction');
     }
+
+   
     //end//
 }

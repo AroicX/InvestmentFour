@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+
 use App\Investor;
 use App\PropertyType;
 use App\PropertyRegion;
@@ -37,6 +38,8 @@ class InvestorOfferController extends Controller
         })->where('active', 1)->paginate(6); //gets all property that met conditions//
         $property_type = PropertyType::where('active', 1)->get();  //gets property type values//
         
+
+        // return $property;
         return view('v1.views.investor_dashboard.offer.offer')
                     ->with('progress', $globalMethods->progressBarColor()) //returns color for account update progressbar//
                     ->with('width', $globalMethods->progressBarWidth()) //returns width for account update progressbar//

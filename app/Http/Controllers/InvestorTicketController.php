@@ -13,6 +13,8 @@ use Mail;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\GlobalMethods;
+use App\AdminNotification;
+
 
 class InvestorTicketController extends Controller
 {
@@ -51,6 +53,7 @@ class InvestorTicketController extends Controller
             if (!empty($new_message)){
                 $notification = 'Your ticket has been delivered successfully! <br/>We will get back to you soon!';
                 $globalMethods->sendNotification(Auth::user()->investor_id, $notification);
+                $globalMethods->adminNotification(1, 'A New ticket has been created !');
                 $message = 'Ticket sent successfully! We will get back to you soon!';
                 // checking if request is ajax
                 if ($request->ajax())
@@ -116,6 +119,7 @@ class InvestorTicketController extends Controller
         {
             $notification = 'The selected ticket has been successfully removed from your ticket list.';
             $globalMethods->sendNotification(Auth::user()->investor_id, $notification);
+            $globalMethods->adminNotification(1, 'Ticket was deleted !');
             $success = "The selected ticket was deleted successfully";
             return response()->json(['success'=>$success]);//return response page//
         }
@@ -136,6 +140,8 @@ class InvestorTicketController extends Controller
         {
             $notification = 'We are glad that you are satisfied with our response/service. We are always open to suggestions regarding how we can serve you better.';
             $globalMethods::sendNotifications(Auth::user()->investor_id, $notification);
+            $globalMethods->adminNotifications(1, 'User Ticket satisfied!');
+
             return response()->json($ticket_message);
         }
     }
@@ -174,6 +180,7 @@ class InvestorTicketController extends Controller
             if (!empty($ticket_response)){
                 $notification = 'Your reply has been successfully recieved. We will get back to you soon!';
                 $globalMethods::sendNotifications(Auth::user()->investor_id, $notification);
+                $globalMethods->adminNotifications(1, 'A New Reply sent  !');
                 $message = 'Reply sent successfully! We will get back to you soon!';
                 return response()->json(['success' => $message]);
             }else{

@@ -17,6 +17,7 @@ class CreateAdminsTable extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
+            $table->enum('role',['content_developer','customer_care','normal_admin','super_admin'])->default('normal_admin');
             $table->rememberToken();
             $table->timestamps();
         });

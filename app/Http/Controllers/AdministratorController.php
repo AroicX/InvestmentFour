@@ -4,13 +4,56 @@ namespace App\Http\Controllers;
 
 use App\Blog;
 use Auth;
+use App\Admin;
+use App\Investor;
+use App\Investment;
+use App\Transaction;
+use App\PropertyUpload;
+use App\TicketMessage;
+use App\IpLog;
+use Mail; //this adds the mail class
+use URL;
+
+use Carbon\Carbon;
+
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Mews\Purifier\Facades\Purifier;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Redirect;
+
 
 class AdministratorController extends Controller
 {
+
+
+
+
+	public function AddNewAdministrator(Request $request)
+	{
+		$this->validate($request, [
+			'name' => 'required',
+			'email' => 'required|email|max:255|unique:admins',
+			'password' => 'required|between:6,30',
+		]);
+
+		
+
+		$admin = new Admin;
+		$admin->name = $request->name;
+		$admin->email = $request->email;
+		$admin->password = bcrypt($request->password);
+		$admin->role = $request->role;
+	
+		$admin->save();
+
+		$notification = array('message' => 'New Administrator has been added successfully','alert' => 'success' );
+				return redirect()->back()->with($notification);
+
+
+		// return $request->all();
+	}
 
 	public function Up()
 	{
@@ -25,6 +68,43 @@ class AdministratorController extends Controller
 
 		$notification = array('message' => 'Site is down','alert' => 'danger' );
 			return redirect()->back()->with($notification);
+	}
+
+	public function dashboard()
+	{
+
+		$today =  Carbon::today();
+
+		
+		$investors = Investor::all();
+		$investments = Investment::where('active','=',1)->get();
+		$transactions = Transaction::all();
+		$property = PropertyUpload::where('active','=', 1)->get();
+		$tickets = TicketMessage::all();
+		$ipLogs = IpLog::all();
+		
+		// return $ipLogs;
+
+
+		$users[] = Auth::user();
+		$users[] = Auth::guard()->user();
+		$users[] = Auth::guard('admin')->user();
+	
+		return view('admin.home',compact(
+							'investors',
+							'transactions',
+							'property',
+							'tickets',
+							'ipLogs',
+							'investments'
+		));
+		# code...
+	}
+
+	public function getByIdInvestor($id){
+		$investor =  Investor::where('id','=',$id)->first();
+
+		return response()->json($investor);
 	}
 	
 	public function CheckForMaintance()
@@ -156,6 +236,64 @@ class AdministratorController extends Controller
 		}
 		
 	}
+
+
+	public function Settings()
+	{
+		$user = Auth::User();
+		$admins = Admin::where('active', '=', 1)->get();
+		return view('admin.profile.index',compact('user','admins'));
+
+	}
+	public function SettingsUpdatePassword(Request $request)
+	{
+
+		$id = Auth::user()->id;
+		$cpassword = $request->old;
+		$newpassword = $request->new;
+		$cnewpassword = $request->con;
+		$action = $request->action;
+ 
+		
+			if (Hash::check($cpassword, Auth::user()->password, [])) {
+				if($newpassword == $cnewpassword){
+					$data = array(
+						'password' => bcrypt($request->input('newpass')),
+					);
+
+					Admin::where('id', $id)->update($data);
+
+					$notification = array(
+
+						'message' => 'Successful... You Have Channged your Password !',
+						'alert' => 'success' 
+					);
+					return redirect()->back()->with($notification);
+				}else{
+
+					$notification = array(
+
+						'message' => 'New Password & Confirm Password No Match ',
+						'alert' => 'info' 
+					);
+					return redirect()->back()->with($notification);
+				}
+			}else{
+
+				$notification = array(
+
+					'message' => 'Old Password is invaild ',
+					'alert' => 'error' 
+				);
+				return redirect()->back()->with($notification);
+			}
+		
+
+	}
+
 	
+	
+
+
 	
 }

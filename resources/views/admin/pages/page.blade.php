@@ -44,7 +44,7 @@
                             <p><b>Who we are:</b> {!! $about->who_we_are !!}</p>
                             <p><b>What we do:</b> {!! $about->what_we_do !!}</p>
                             <p><b>Our Essence:</b> {!! $about->our_essence !!}</p>
-                            {{-- {{$about}} --}}
+
                         </div>
                     </div>
                 </div>
@@ -138,6 +138,8 @@
 </div>
 
 </div>
+
+
 
 
 

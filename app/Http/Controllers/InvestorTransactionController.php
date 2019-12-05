@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Investor;
+use App\Investment;
 use App\Kin;
 use App\Country;
 use App\BankDetail;
@@ -42,6 +43,8 @@ class InvestorTransactionController extends Controller
     {
         $token = \Crypt::decrypt($token);
         $transaction = Transaction::where('order_id',$token)->where('investor_id', Auth::user()->investor_id)->get();
+        // dd($transaction$transactions->pluck('order'));
+
         return view('v1.views.investor_dashboard.potfolio.transaction')
                 ->with('progress', $globalMethods->progressBarColor())
                 ->with('width', $globalMethods->progressBarWidth())
@@ -49,6 +52,54 @@ class InvestorTransactionController extends Controller
                 ->with('transactions', $transaction);
     }
     //end//
+
+    //sale property
+        public function saleProperty(Request $request)
+        {
+            // $investment = Investment::where('');
+
+            $transaction_id = $request->transaction_id;
+            $order_id = $request->order_id;
+
+            $getTransaction = Transaction::where('id', '=', $transaction_id)->with('order')->first();
+            
+            if($request->slot >= $getTransaction->order->purchased_slot ){
+               $toSale = $getTransaction->order->purchased_slot - 1;
+
+                $message = 'You can\'t sale more than '.$toSale.' slot';
+                return redirect()->back()->with('status', $message);
+
+            }else{
+
+                $newSlots = $getTransaction->order->purchased_slot - $request->slot;
+                $total = $newSlots * $getTransaction->order->property_cost;
+
+                $data = array(
+                    'purchased_slot' => $newSlots,
+                    'miscellaneous' => $total
+                );
+
+               $getOrder = Order::where('id', '=', $getTransaction->order_id)->first();
+
+               Order::where('id', '=', $getTransaction->order_id)->update($data);
+
+               $getInvestment = Investment::where('id', '=', $getOrder->investment_id)->first();
+
+               $newInvestmentData = array(
+                    'avail_slots' => $getInvestment->avail_slots + $request->slot,
+                   
+                );
+
+              $getInvestment->update($newInvestmentData);
+
+              $message = 'You have successful sold  '.$request->slot.' slot';
+              return redirect()->back()->with('success', $message);
+            }
+
+
+           return $request->all();
+        }
+    //end
 
     //method converts user transaction to pdf report
     public function getPDF ($token)

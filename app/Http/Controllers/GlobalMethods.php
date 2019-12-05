@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Investor;
-use App\Kin;
-use App\Country;
+use App\AdminNotification;
 use App\Bank;
 use App\BankDetail;
-use App\WishList;
-use App\UserNotification;
+use App\Country;
+use App\Investor;
+use App\Kin;
 use App\Relationship;
-
+use App\UserNotification;
+use App\WishList;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -26,7 +26,7 @@ class GlobalMethods extends Controller
     {
         $notify = new UserNotification();
         $notify->investor_id = $investor_id;
-        $notify->data= $message;
+        $notify->data = $message;
         $notify->save();
     }
     //end//
@@ -35,10 +35,37 @@ class GlobalMethods extends Controller
     {
         $notify = new UserNotification();
         $notify->investor_id = $investor_id;
-        $notify->data= $message;
+        $notify->data = $message;
         $notify->save();
     }
     //end//
+
+    public function adminNotification ($admin_id, $message) //method sends notification to user
+    {
+
+        // return $admin_id;
+       
+        $notify = new AdminNotification();
+        $notify->admin_id = $admin_id;
+        $notify->data = $message;
+        $notify->save();
+        
+    }
+    //end//
+
+    public function adminNotifications ($admin_id, $message) //method sends notification to user
+    {
+       
+        $notify = new AdminNotification();
+        $notify->admin_id = $admin_id;
+        $notify->data = $message;
+        $notify->save();
+        
+    }
+    //end//
+
+
+  
 
     public function getCountryPrefix ($value) //method gets country prefixes based on country
     {

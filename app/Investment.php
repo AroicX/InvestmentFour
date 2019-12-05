@@ -6,6 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Investment extends Model
 {
+
+    protected $fillable = [
+        'avail_slots'
+    ];
+
     public function property_upload ()
     {
         return $this->belongsTo('App\PropertyUpload');
@@ -24,5 +29,10 @@ class Investment extends Model
     public function on_rentage ()
     {
         return $this->belongsTo('App/OnRentage');
+    }
+
+    public function bank_detail ()
+    {
+        return $this->hasOne('App/BankDetail','investor_id','investor_id');
     }
 }

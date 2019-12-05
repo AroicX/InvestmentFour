@@ -62,6 +62,11 @@
                             Offers 
                         </a>
                     </li>
+                    <li class="{{Route::is('market')  ? 'active-page' : '' }} hovered-nav x1-margin-top x1-padding-top x1-padding-bottom">
+                        <a href="{{route('market')}}" style="color:#fff">
+                            Market
+                        </a>
+                    </li>
                     <li class="{{Route::is('ticket') || Route::is('ticketResponse') || Route::is('readResponse') ? 'active-page' : '' }} hovered-nav x1-margin-top x1-padding-top x1-padding-bottom dropdown">
                         <a  role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#" title="Ticket" class="dropdown-toggle" style="color:#fff"> 
                             Ticket <i class="fas fa-caret-down"></i>
